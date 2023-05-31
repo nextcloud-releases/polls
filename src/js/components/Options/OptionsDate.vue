@@ -84,6 +84,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapState } from 'vuex'
 import { NcActions, NcActionButton, NcEmptyContent, NcModal } from '@nextcloud/vue'
 import OptionCloneDate from './OptionCloneDate.vue'
@@ -113,7 +114,9 @@ export default {
 		NcModal,
 		OptionCloneDate,
 		OptionItem,
-		OptionItemOwner: () => import('./OptionItemOwner.vue'),
+		NcButton,
+		DatePollIcon,
+		OptionItemOwner: defineAsyncComponent(() => import('./OptionItemOwner.vue')),
 	},
 
 	mixins: [

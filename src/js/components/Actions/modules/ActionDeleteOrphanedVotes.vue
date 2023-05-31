@@ -21,13 +21,9 @@
   -->
 
 <template>
-	<div class="action toggle-sidebar">
-		<NcButton type="primary"
-			:aria-label="caption"
-			@click="clickAction()">
-			{{ caption }}
-		</NcButton>
-	</div>
+	<NcCheckboxRadioSwitch v-model:checked="adminAccess" type="switch">
+		{{ label }}
+	</NcCheckboxRadioSwitch>
 </template>
 
 <script>
@@ -39,6 +35,10 @@ export default {
 
 	components: {
 		NcButton,
+	},
+
+	emits: {
+		change: null,
 	},
 
 	data() {

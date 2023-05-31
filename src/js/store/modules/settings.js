@@ -52,6 +52,9 @@ const namespaced = true
 const state = defaultSettings()
 
 const mutations = {
+	/**
+	 * @param {object} state
+	 */
 	reset(state) {
 		Object.assign(state, defaultSettings())
 	},
@@ -62,27 +65,50 @@ const mutations = {
 		})
 	},
 
+	/**
+	 * @param {object} state state
+	 * @param {object} payload payload
+	 */
 	setCalendars(state, payload) {
 		state.availableCalendars = payload.calendars
 	},
 
+	/**
+	 * @param {object} state state
+	 * @param {object} payload payload
+	 */
 	addCheckCalendar(state, payload) {
 		state.user.checkCalendars.push(payload.calendar.key)
 	},
 
+	/**
+	 * @param {object} state state
+	 * @param {object} payload payload
+	 */
 	setPollCombo(state, payload) {
 		state.user.pollCombo = payload.pollCombo
 	},
 
+	/**
+	 * @param {object} state state
+	 * @param {object} payload payload
+	 */
 	setViewDatePoll(state, payload) {
 		state.session.manualViewDatePoll = payload
 	},
+	/**
+	 * @param {object} state state
+	 * @param {object} payload payload
+	 */
 	setViewTextPoll(state, payload) {
 		state.session.manualViewTextPoll = payload
 	},
 }
 
 const getters = {
+	/**
+	 * @param {object} state state
+	 */
 	viewTextPoll(state) {
 		if (state.session.manualViewTextPoll) {
 			return state.session.manualViewTextPoll
@@ -94,6 +120,9 @@ const getters = {
 
 	},
 
+	/**
+	 * @param {object} state state
+	 */
 	viewDatePoll(state) {
 		if (state.session.manualViewDatePoll) {
 			return state.session.manualViewDatePoll
@@ -107,6 +136,9 @@ const getters = {
 }
 
 const actions = {
+	/**
+	 * @param {object} context state context
+	 */
 	async get(context) {
 		try {
 			const response = await UserSettingsAPI.getUserSettings()
@@ -118,6 +150,10 @@ const actions = {
 		}
 	},
 
+	/**
+	 * @param {object} context state context
+	 * @param {object} payload payload
+	 */
 	async setPollCombo(context, payload) {
 		await context.commit('setPollCombo', {
 			pollCombo: payload.pollCombo,
@@ -125,6 +161,9 @@ const actions = {
 		context.dispatch('write')
 	},
 
+	/**
+	 * @param {object} context state context
+	 */
 	async write(context) {
 		try {
 			const response = await UserSettingsAPI.writeUserSettings(context.state.user)
@@ -136,6 +175,9 @@ const actions = {
 		}
 	},
 
+	/**
+	 * @param {object} context state context
+	 */
 	async getCalendars(context) {
 		try {
 			const response = await CalendarAPI.getCalendars()

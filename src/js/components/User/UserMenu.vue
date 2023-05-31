@@ -34,23 +34,19 @@
 		</NcActionButton>
 		<NcActionSeparator v-if="$route.name === 'publicVote'" />
 		<NcActionInput v-if="$route.name === 'publicVote'"
-			v-bind="userEmail.inputProps"
-			:value.sync="userEmail.inputValue"
-			:label-outside="false"
-			:label="t('polls', 'Edit Email Address')"
-			@update:value="validateEmailAddress"
+			:class="check.status"
+			:model-value="emailAddressTemp"
+			@update:model-value="validateEmailAddress"
 			@submit="submitEmailAddress">
 			<template #icon>
 				<EditEmailIcon />
 			</template>
 			{{ t('polls', 'Edit Email Address') }}
 		</NcActionInput>
-		<NcActionInput v-if="$route.name === 'publicVote' && permissions.vote"
-			v-bind="userName.inputProps"
-			:value.sync="userName.inputValue"
-			:label-outside="false"
-			:label="t('polls', 'Change name')"
-			@update:value="validateDisplayName"
+		<NcActionInput v-if="$route.name === 'publicVote'"
+			:class="checkDisplayName.status"
+			:model-value="displayNameTemp"
+			@update:model-value="validateDisplayName"
 			@submit="submitDisplayName">
 			<template #icon>
 				<EditAccountIcon />
@@ -60,7 +56,7 @@
 		<NcActionButton v-if="$route.name === 'publicVote'"
 			:name="t('polls', 'Get your personal link per mail')"
 			:disabled="!emailAddress"
-			:value="emailAddress"
+			:model-value="emailAddress"
 			@click="resendInvitation()">
 			<template #icon>
 				<SendLinkPerEmailIcon />

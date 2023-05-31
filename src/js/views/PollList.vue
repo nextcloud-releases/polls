@@ -102,6 +102,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapState, mapActions } from 'vuex'
 import { showError } from '@nextcloud/dialogs'
 import { NcActions, NcActionButton, NcAppContent, NcEmptyContent } from '@nextcloud/vue'
@@ -126,8 +127,8 @@ export default {
 		ArchivePollIcon,
 		RestorePollIcon,
 		PollsAppIcon,
-		LoadingOverlay: () => import('../components/Base/modules/LoadingOverlay.vue'),
-		PollItem: () => import('../components/PollList/PollItem.vue'),
+		LoadingOverlay: defineAsyncComponent(() => import('../components/Base/LoadingOverlay.vue')),
+		PollItem: defineAsyncComponent(() => import('../components/PollList/PollItem.vue')),
 	},
 
 	data() {

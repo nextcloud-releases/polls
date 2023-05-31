@@ -79,6 +79,7 @@
 
 <script>
 import { NcAppSidebar, NcAppSidebarTab } from '@nextcloud/vue'
+import { defineAsyncComponent } from 'vue'
 import { mapState } from 'vuex'
 import { emit, subscribe, unsubscribe } from '@nextcloud/event-bus'
 import SidebarConfigurationIcon from 'vue-material-design-icons/Wrench.vue'
@@ -91,11 +92,17 @@ export default {
 	name: 'SideBar',
 
 	components: {
-		SideBarTabConfiguration: () => import('../components/SideBar/SideBarTabConfiguration.vue'),
-		SideBarTabComments: () => import('../components/SideBar/SideBarTabComments.vue'),
-		SideBarTabOptions: () => import('../components/SideBar/SideBarTabOptions.vue'),
-		SideBarTabShare: () => import('../components/SideBar/SideBarTabShare.vue'),
-		SideBarTabActivity: () => import('../components/SideBar/SideBarTabActivity.vue'),
+		// test static loading
+		// SideBarTabConfiguration,
+		// SideBarTabComments,
+		// SideBarTabOptions,
+		// SideBarTabShare,
+		// SideBarTabActivity,
+		SideBarTabConfiguration: defineAsyncComponent(() => import('../components/SideBar/SideBarTabConfiguration.vue')),
+		SideBarTabComments: defineAsyncComponent(() => import('../components/SideBar/SideBarTabComments.vue')),
+		SideBarTabOptions: defineAsyncComponent(() => import('../components/SideBar/SideBarTabOptions.vue')),
+		SideBarTabShare: defineAsyncComponent(() => import('../components/SideBar/SideBarTabShare.vue')),
+		SideBarTabActivity: defineAsyncComponent(() => import('../components/SideBar/SideBarTabActivity.vue')),
 		NcAppSidebar,
 		NcAppSidebarTab,
 		SidebarActivityIcon,

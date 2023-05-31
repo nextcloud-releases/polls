@@ -35,6 +35,9 @@ export default {
 			default: 'div',
 		},
 	},
+	emits: {
+		click: null,
+	},
 }
 </script>
 

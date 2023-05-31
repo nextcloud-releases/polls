@@ -58,6 +58,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { getCurrentUser } from '@nextcloud/auth'
 import { NcAvatar } from '@nextcloud/vue'
 
@@ -66,17 +67,15 @@ export default {
 
 	components: {
 		NcAvatar,
-		AdminIcon: () => import('vue-material-design-icons/ShieldCrown.vue'),
-		LinkIcon: () => import('vue-material-design-icons/LinkVariant.vue'),
-		InternalLinkIcon: () => import('vue-material-design-icons/LinkVariant.vue'),
-		ContactIcon: () => import('vue-material-design-icons/CardAccountDetails.vue'),
-		EmailIcon: () => import('vue-material-design-icons/Email.vue'),
-		ShareIcon: () => import('vue-material-design-icons/ShareVariant.vue'),
-		ContactGroupIcon: () => import('vue-material-design-icons/AccountGroupOutline.vue'),
-		GroupIcon: () => import('vue-material-design-icons/AccountMultiple.vue'),
-		CircleIcon: () => import('vue-material-design-icons/GoogleCirclesExtended.vue'),
-		DeletedUserIcon: () => import('vue-material-design-icons/AccountOff.vue'),
-		AnoymousIcon: () => import('vue-material-design-icons/Incognito.vue'),
+		AdminIcon: defineAsyncComponent(() => import('vue-material-design-icons/ShieldCrownOutline.vue')),
+		LinkIcon: defineAsyncComponent(() => import('vue-material-design-icons/LinkVariant.vue')),
+		InternalLinkIcon: defineAsyncComponent(() => import('vue-material-design-icons/LinkVariant.vue')),
+		ContactIcon: defineAsyncComponent(() => import('vue-material-design-icons/CardAccountDetails.vue')),
+		EmailIcon: defineAsyncComponent(() => import('vue-material-design-icons/Email.vue')),
+		ShareIcon: defineAsyncComponent(() => import('vue-material-design-icons/ShareVariant.vue')),
+		ContactGroupIcon: defineAsyncComponent(() => import('vue-material-design-icons/AccountGroupOutline.vue')),
+		GroupIcon: defineAsyncComponent(() => import('vue-material-design-icons/AccountMultiple.vue')),
+		CircleIcon: defineAsyncComponent(() => import('vue-material-design-icons/GoogleCirclesExtended.vue')),
 	},
 
 	inheritAttrs: false,

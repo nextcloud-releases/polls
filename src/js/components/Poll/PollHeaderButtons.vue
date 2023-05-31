@@ -41,6 +41,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { mapState } from 'vuex'
 import { NcButton, NcPopover } from '@nextcloud/vue'
 import { ActionToggleSidebar } from '../Actions/index.js'
@@ -53,9 +54,9 @@ export default {
 		PollInformationIcon,
 		NcPopover,
 		NcButton,
-		UserMenu: () => import('../User/UserMenu.vue'),
-		ExportPoll: () => import('../Export/ExportPoll.vue'),
-		PollInformation: () => import('../Poll/PollInformation.vue'),
+		UserMenu: defineAsyncComponent(() => import('../User/UserMenu.vue')),
+		ExportPoll: defineAsyncComponent(() => import('../Export/ExportPoll.vue')),
+		PollInformation: defineAsyncComponent(() => import('../Poll/PollInformation.vue')),
 	},
 
 	data() {
@@ -74,7 +75,7 @@ export default {
 		},
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		this.$store.dispatch({ type: 'poll/reset' })
 	},
 }

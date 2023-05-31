@@ -67,8 +67,10 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
-import { NcAppContent, NcEmptyContent } from '@nextcloud/vue'
+import { defineAsyncComponent } from 'vue'
+import { mapState, mapGetters } from 'vuex'
+import { NcAppContent, NcButton, NcEmptyContent } from '@nextcloud/vue'
+import { emit } from '@nextcloud/event-bus'
 import MarkUpDescription from '../components/Poll/MarkUpDescription.vue'
 import PollInfoLine from '../components/Poll/PollInfoLine.vue'
 import PollHeaderButtons from '../components/Poll/PollHeaderButtons.vue'
@@ -88,12 +90,10 @@ export default {
 		PollInfoLine,
 		DatePollIcon,
 		TextPollIcon,
-		ActionOpenOptionsSidebar,
-		CardAnonymousPollHint: () => import('../components/Cards/modules/CardAnonymousPollHint.vue'),
-		CardHiddenParticipants: () => import('../components/Cards/modules/CardHiddenParticipants.vue'),
-		LoadingOverlay: () => import('../components/Base/modules/LoadingOverlay.vue'),
-		VoteTable: () => import('../components/VoteTable/VoteTable.vue'),
-		VoteInfoCards: () => import('../components/Cards/VoteInfoCards.vue'),
+		LoadingOverlay: defineAsyncComponent(() => import('../components/Base/LoadingOverlay.vue')),
+		OptionProposals: defineAsyncComponent(() => import('../components/Options/OptionProposals.vue')),
+		PublicRegisterModal: defineAsyncComponent(() => import('../components/Poll/PublicRegisterModal.vue')),
+		VoteTable: defineAsyncComponent(() => import('../components/VoteTable/VoteTable.vue')),
 	},
 
 	data() {
@@ -139,7 +139,7 @@ export default {
 		this.scrollElement.addEventListener('scroll', this.handleScroll)
 	},
 
-	beforeDestroy() {
+	beforeUnmount() {
 		this.scrollElement.removeEventListener('scroll', this.handleScroll)
 		this.resetPoll()
 	},

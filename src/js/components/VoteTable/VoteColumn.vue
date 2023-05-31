@@ -59,6 +59,7 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue'
 import { mapState, mapGetters } from 'vuex'
 import { NcButton } from '@nextcloud/vue'
 import Counter from '../Options/Counter.vue'
@@ -79,8 +80,8 @@ export default {
 		FlexSpacer,
 		VoteItem,
 		NcButton,
-		CalendarPeek: () => import('../Calendar/CalendarPeek.vue'),
-		OptionItemOwner: () => import('../Options/OptionItemOwner.vue'),
+		CalendarPeek: defineAsyncComponent(() => import('../Calendar/CalendarPeek.vue')),
+		OptionItemOwner: defineAsyncComponent(() => import('../Options/OptionItemOwner.vue')),
 	},
 
 	mixins: [confirmOption],
