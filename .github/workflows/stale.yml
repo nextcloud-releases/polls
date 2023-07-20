@@ -1,4 +1,4 @@
-name: Mark stale issues
+name: Mark stale issues vue3
 
 on:
   schedule:
