@@ -23,7 +23,7 @@
 <template>
 	<div :style="cssVar">
 		<OptionsTextAdd v-if="!closed" />
-		<draggable v-if="countOptions"
+		<Sortable v-if="countOptions"
 			v-model="reOrderedOptions"
 			v-bind="dragOptions"
 			@start="drag = true"
@@ -68,8 +68,8 @@
 						</NcActions>
 					</template>
 				</OptionItem>
-			</TransitionGroup>
-		</draggable>
+			</transition-group>
+		</Sortable>
 
 		<NcEmptyContent v-else
 			:name="t('polls', 'No vote options')"
@@ -84,8 +84,9 @@
 <script>
 import { defineAsyncComponent } from 'vue'
 import { mapGetters, mapState } from 'vuex'
-import { NcActions, NcActionButton, NcEmptyContent } from '@nextcloud/vue'
-import draggable from 'vuedraggable'
+import { NcButton, NcEmptyContent } from '@nextcloud/vue'
+import { Sortable } from 'sortablejs-vue3'
+import ActionDelete from '../Actions/ActionDelete.vue'
 import OptionItem from './OptionItem.vue'
 import OptionItemOwner from '../Options/OptionItemOwner.vue'
 import { confirmOption, deleteOption, restoreOption } from '../../mixins/optionMixins.js'
@@ -106,6 +107,7 @@ export default {
 		ConfirmIcon,
 		UnconfirmIcon,
 		NcEmptyContent,
+		Sortable,
 		OptionItem,
 		OptionItemOwner,
 		NcButton,
