@@ -41,6 +41,10 @@ export default {
 		change: null,
 	},
 
+	emits: {
+		change: null,
+	},
+
 	data() {
 		return {
 			caption: t('polls', 'Delete orphaned'),

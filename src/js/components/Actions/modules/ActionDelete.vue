@@ -88,6 +88,10 @@ export default {
 		delete: null,
 	},
 
+	emits: {
+		delete: null,
+	},
+
 	data() {
 		return {
 			deleteInterval: null,
