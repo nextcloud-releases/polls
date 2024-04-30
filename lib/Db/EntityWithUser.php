@@ -46,6 +46,8 @@ abstract class EntityWithUser extends Entity {
 	protected string $pollShowResults = '';
 	protected int $pollExpire = 0;
 
+	private ?UserBase $user = null;
+
 	public const ANON_FULL = 'anonymous';
 	public const ANON_PRIVACY = 'privacy';
 	public const ANON_NONE = 'ful_view';
@@ -78,15 +80,23 @@ abstract class EntityWithUser extends Entity {
 		) {
 			return self::ANON_FULL;
 		}
-		
+
 		return self::ANON_PRIVACY;
 	}
 
 	public function getUser(): UserBase {
+		if ($this->user !== null) {
+			return $this->user;
+		}
+
 		/** @var UserMapper */
 		$userMapper = (Container::queryClass(UserMapper::class));
 		$user = $userMapper->getParticipant($this->getUserId(), $this->getPollId());
 		$user->setAnonymizeLevel($this->getAnonymizeLevel());
 		return $user;
+	}
+
+	public function setUser(UserBase $user): void {
+		$this->user = $user;
 	}
 }

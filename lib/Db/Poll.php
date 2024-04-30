@@ -139,6 +139,10 @@ class Poll extends EntityWithUser implements JsonSerializable {
 	protected string $userRole = "none";
 	protected ?int $isCurrentUserLocked = 0;
 
+
+	private ?Vote $vote = null;
+	private bool $internalVote = false;
+
 	public function __construct() {
 		$this->addType('created', 'int');
 		$this->addType('expire', 'int');
@@ -191,12 +195,17 @@ class Poll extends EntityWithUser implements JsonSerializable {
 			'voteLimit' => $this->getVoteLimit(),
 			'lastInteraction' => $this->getLastInteraction(),
 			'summary' => [
-				'orphanedVotes' => $this->getCurrentUserOrphanedVotes(),
-				'yesByCurrentUser' => $this->getCurrentUserYesVotes(),
+				'orphanedVotes' => ($this->internalVote) ? 0 : $this->getCurrentUserOrphanedVotes(),
+				'yesByCurrentUser' => ($this->internalVote) ? (($this->vote?->getVoteAnswer() === Vote::VOTE_YES) ? 1 : 0) : $this->getCurrentUserYesVotes(),
 				'countVotes' => $this->getCurrentUserCountVotes(),
 				'userRole' => $this->getUserRole(),
 			],
 		];
+	}
+
+	public function setVote(?Vote $vote): void {
+		$this->internalVote = true;
+		$this->vote = $vote;
 	}
 
 	/**

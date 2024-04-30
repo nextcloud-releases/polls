@@ -102,6 +102,11 @@ class Acl implements JsonSerializable {
 		];
 	}
 
+	public function setShare(?Share $share): void {
+		$this->noShare = ($share === null);
+		$this->share = $share;
+	}
+
 	public function getPermissionsArray(): array {
 		return [
 			'addOptions' => $this->getIsAllowed(self::PERMISSION_OPTIONS_ADD),
@@ -212,6 +217,10 @@ class Acl implements JsonSerializable {
 	private function loadShare(): void {
 		if ($this->noShare) {
 			throw new ShareNotFoundException('No token was set for ACL');
+		}
+
+		if ($this->share !== null) {
+			return;
 		}
 
 		// no token in session, try to find a user, who matches
