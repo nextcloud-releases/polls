@@ -143,7 +143,7 @@ class PollService {
 				->selectAlias($qb->createFunction('COALESCE(' . $qb->func()->max('options.timestamp') . ', ' . $qb->createNamedParameter(0, IQueryBuilder::PARAM_INT) . ')'),  'max_date')
 				->selectAlias($qb->createFunction('COALESCE(' . $qb->func()->min('options.timestamp') . ', ' . $qb->createNamedParameter(time(), IQueryBuilder::PARAM_INT) . ')'),  'min_date')
 				->selectAlias($qb->func()->count('user_vote.vote_answer'), 'current_user_votes')
-				->selectAlias($qb->createFunction('COALESCE(\'shares.type\', \'\')'),  'user_role')
+				->selectAlias($qb->createFunction('COALESCE(`shares`.`type`, \'\')'),  'user_role')
 				->from('polls_polls', 'polls_polls')
 				->leftJoin(
 					'polls_polls',
@@ -202,6 +202,7 @@ class PollService {
 				$poll->setUseNo($data['polls_polls_use_no']);
 				$poll->setLastInteraction($data['polls_polls_last_interaction']);
 				$poll->setMiscSettings($data['polls_polls_misc_settings']);
+   				$poll->fixUserRole($data['user_role']);
 
 				$share = null;
 				if ($data['shares_token'] !== null) {
@@ -235,9 +236,9 @@ class PollService {
 				}
 
 				if ($share?->getType() === Share::TYPE_ADMIN) {
-					$user = new Admin($userId);
+					$user = new Admin($data['polls_polls_owner']);
 				} else {
-					$user = new User($userId);
+					$user = new User($data['polls_polls_owner']);
 				}
 
 				$poll->setVote($vote);
@@ -253,7 +254,7 @@ class PollService {
 						[
 							'relevantThreshold' => $relevantThreshold,
 							'relevantThresholdNet' => $poll->getRelevantThresholdNet(),
-							'permissions' => $this->acl->getPermissionsArray(), // laggy
+							'permissions' => $this->acl->getPermissionsArray(true),
 							'currentUser' => $this->acl->getCurrentUserArray(),
 						],
 					);

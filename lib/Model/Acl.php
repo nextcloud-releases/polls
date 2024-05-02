@@ -107,23 +107,23 @@ class Acl implements JsonSerializable {
 		$this->share = $share;
 	}
 
-	public function getPermissionsArray(): array {
+	public function getPermissionsArray(bool $involved = false): array {
 		return [
-			'addOptions' => $this->getIsAllowed(self::PERMISSION_OPTIONS_ADD),
-			'allAccess' => $this->getIsAllowed(self::PERMISSION_ALL_ACCESS),
-			'archive' => $this->getIsAllowed(self::PERMISSION_POLL_ARCHIVE),
-			'comment' => $this->getIsAllowed(self::PERMISSION_COMMENT_ADD),
-			'delete' => $this->getIsAllowed(self::PERMISSION_POLL_DELETE),
-			'edit' => $this->getIsAllowed(self::PERMISSION_POLL_EDIT),
-			'pollCreation' => $this->getIsAllowed(self::PERMISSION_POLL_CREATE),
-			'pollDownload' => $this->getIsAllowed(self::PERMISSION_POLL_DOWNLOAD),
-			'publicShares' => $this->getIsAllowed(self::PERMISSION_PUBLIC_SHARES),
-			'seeResults' => $this->getIsAllowed(self::PERMISSION_POLL_RESULTS_VIEW),
-			'seeUsernames' => $this->getIsAllowed(self::PERMISSION_POLL_USERNAMES_VIEW),
-			'seeMailAddresses' => $this->getIsAllowed(self::PERMISSION_POLL_MAILADDRESSES_VIEW),
-			'subscribe' => $this->getIsAllowed(self::PERMISSION_POLL_SUBSCRIBE),
-			'view' => $this->getIsAllowed(self::PERMISSION_POLL_VIEW),
-			'vote' => $this->getIsAllowed(self::PERMISSION_VOTE_EDIT)
+			'addOptions' => $this->getIsAllowed(self::PERMISSION_OPTIONS_ADD, alreadyInvolved: $involved),
+			'allAccess' => $this->getIsAllowed(self::PERMISSION_ALL_ACCESS, alreadyInvolved: $involved),
+			'archive' => $this->getIsAllowed(self::PERMISSION_POLL_ARCHIVE, alreadyInvolved: $involved),
+			'comment' => $this->getIsAllowed(self::PERMISSION_COMMENT_ADD, alreadyInvolved: $involved),
+			'delete' => $this->getIsAllowed(self::PERMISSION_POLL_DELETE, alreadyInvolved: $involved),
+			'edit' => $this->getIsAllowed(self::PERMISSION_POLL_EDIT, alreadyInvolved: $involved),
+			'pollCreation' => $this->getIsAllowed(self::PERMISSION_POLL_CREATE, alreadyInvolved: $involved),
+			'pollDownload' => $this->getIsAllowed(self::PERMISSION_POLL_DOWNLOAD, alreadyInvolved: $involved),
+			'publicShares' => $this->getIsAllowed(self::PERMISSION_PUBLIC_SHARES, alreadyInvolved: $involved),
+			'seeResults' => $this->getIsAllowed(self::PERMISSION_POLL_RESULTS_VIEW, alreadyInvolved: $involved),
+			'seeUsernames' => $this->getIsAllowed(self::PERMISSION_POLL_USERNAMES_VIEW, alreadyInvolved: $involved),
+			'seeMailAddresses' => $this->getIsAllowed(self::PERMISSION_POLL_MAILADDRESSES_VIEW, alreadyInvolved: $involved),
+			'subscribe' => $this->getIsAllowed(self::PERMISSION_POLL_SUBSCRIBE, alreadyInvolved: $involved),
+			'view' => $this->getIsAllowed(self::PERMISSION_POLL_VIEW, alreadyInvolved: $involved),
+			'vote' => $this->getIsAllowed(self::PERMISSION_VOTE_EDIT, alreadyInvolved: $involved)
 		];
 	}
 	public function getCurrentUserArray(): array {
@@ -302,7 +302,7 @@ class Acl implements JsonSerializable {
 		return ($this->getPoll()->getOwner() === $this->getUserId());
 	}
 
-	public function getIsAllowed(string $permission, ?string $userId = null, ?int $pollId = null): bool|null {
+	public function getIsAllowed(string $permission, ?string $userId = null, ?int $pollId = null, bool $alreadyInvolved = false): bool|null {
 		// $this->verifyConstraints();
 		return match ($permission) {
 			self::PERMISSION_OVERRIDE => true,
@@ -311,7 +311,7 @@ class Acl implements JsonSerializable {
 			self::PERMISSION_POLL_DOWNLOAD => $this->appSettings->getPollDownloadAllowed(),
 			self::PERMISSION_ALL_ACCESS => $this->appSettings->getAllAccessAllowed(),
 			self::PERMISSION_PUBLIC_SHARES => $this->appSettings->getPublicSharesAllowed(),
-			self::PERMISSION_POLL_VIEW => $this->getAllowAccessPoll(),
+			self::PERMISSION_POLL_VIEW => $this->getAllowAccessPoll($alreadyInvolved),
 			self::PERMISSION_POLL_EDIT => $this->getAllowEditPoll(),
 			self::PERMISSION_POLL_DELETE => $this->getAllowDeletePoll(),
 			self::PERMISSION_POLL_ARCHIVE => $this->getAllowDeletePoll(),
@@ -453,7 +453,7 @@ class Acl implements JsonSerializable {
 	/**
 	 * Checks, if user is allowed to access poll
 	 **/
-	private function getAllowAccessPoll(): bool {
+	private function getAllowAccessPoll(bool $alreadyInvolved = false): bool {
 		if ($this->getAllowEditPoll()) {
 			// edit rights include access to poll
 			return true;
@@ -464,7 +464,7 @@ class Acl implements JsonSerializable {
 			return false;
 		}
 
-		if ($this->getIsInvolved()) {
+		if ($alreadyInvolved || $this->getIsInvolved()) {
 			// grant access if user is involved in poll in any way
 			return true;
 		}

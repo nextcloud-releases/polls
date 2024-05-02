@@ -208,6 +208,10 @@ class Poll extends EntityWithUser implements JsonSerializable {
 		$this->vote = $vote;
 	}
 
+	public function fixUserRole(string $userRole = ''): void {
+		$this->userRole = $userRole;
+	}
+
 	/**
 	 * @return static
 	 */
